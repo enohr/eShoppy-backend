@@ -1,6 +1,7 @@
 package com.commerce.eShop.model;
 
 
+import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,23 +16,23 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productId;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private BigDecimal price;
 
-    @Column(name = "sku_id")
+    @NotNull
+    @Column(name = "sku_id", nullable = false, unique=true)
     private String sku_id;
 
 
     public Product() {}
 
-    public Product(int productId, String title, String description, BigDecimal price, String sku_id) {
-        this.productId = productId;
+    public Product(String title, String description, BigDecimal price, String sku_id) {
         this.title = title;
         this.description = description;
         this.price = price;

@@ -14,13 +14,15 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepo;
 
-    @Transactional()
+    @Transactional
     public List<Product> listAllProducts() {
         return productRepo.findAll();
     }
 
+    @Transactional
     public Product createProduct(Product product) {
-        System.out.println(product.toString());
+        String skuId = "skuid" + Math.abs((new String(product.getProductId() + product.getTitle() + product.getPrice() + product.getDescription())).hashCode());
+        product.setSku_id(skuId);
         return productRepo.save(product);
     }
 

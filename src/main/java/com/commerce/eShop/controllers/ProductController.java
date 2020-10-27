@@ -3,11 +3,10 @@ package com.commerce.eShop.controllers;
 
 import com.commerce.eShop.model.Product;
 import com.commerce.eShop.services.ProductService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,16 +20,18 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public String getProducts() {
+    public String getProducts() throws JsonProcessingException {
         List<Product> productList = productService.listAllProducts();
-        System.out.println(productList);
-        return "Teste";
+
+        return new ObjectMapper().writeValueAsString(productList);
     }
 
     @PostMapping("/product")
-    public void createProduct() {
-        Product p1 = new Product(1, "Teste", "Product 1", new BigDecimal(1.99), "skuid123123");
+    public String createProduct(@RequestBody String body) throws JsonProcessingException {
+        Product product = new ObjectMapper().readValue(body, Product.class);
 
-        productService.createProduct(p1);
+        Product returnProduct = productService.createProduct(product);
+
+        return new ObjectMapper().writeValueAsString(returnProduct);
     }
 }
