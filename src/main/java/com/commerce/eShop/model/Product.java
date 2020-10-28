@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -30,13 +31,14 @@ public class Product {
     private String sku_id;
 
 
-    public Product() {}
+    public Product() {
+        this.sku_id = "skuID" + UUID.randomUUID().toString().substring(26).toUpperCase();
+    }
 
     public Product(String title, String description, BigDecimal price, String sku_id) {
         this.title = title;
         this.description = description;
         this.price = price;
-        this.sku_id = sku_id;
     }
 
     public int getProductId() {

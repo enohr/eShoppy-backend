@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductService {
@@ -21,8 +22,6 @@ public class ProductService {
 
     @Transactional
     public Product createProduct(Product product) {
-        String skuId = "skuid" + Math.abs((new String(product.getProductId() + product.getTitle() + product.getPrice() + product.getDescription())).hashCode());
-        product.setSku_id(skuId);
         return productRepo.save(product);
     }
 

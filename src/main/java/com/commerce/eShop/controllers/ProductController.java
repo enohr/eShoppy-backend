@@ -6,6 +6,8 @@ import com.commerce.eShop.services.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -20,18 +22,18 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public String getProducts() throws JsonProcessingException {
+    public ResponseEntity<?> getProducts() throws JsonProcessingException {
         List<Product> productList = productService.listAllProducts();
 
-        return new ObjectMapper().writeValueAsString(productList);
+        return new ResponseEntity<>(new ObjectMapper().writeValueAsString(productList), HttpStatus.FOUND);
     }
 
     @PostMapping("/product")
-    public String createProduct(@RequestBody String body) throws JsonProcessingException {
+    public ResponseEntity<?> createProduct(@RequestBody String body) throws JsonProcessingException {
         Product product = new ObjectMapper().readValue(body, Product.class);
 
         Product returnProduct = productService.createProduct(product);
 
-        return new ObjectMapper().writeValueAsString(returnProduct);
+        return new ResponseEntity<>(new ObjectMapper().writeValueAsString(returnProduct), HttpStatus.CREATED);
     }
 }
