@@ -25,7 +25,7 @@ public class ProductController {
     public ResponseEntity<?> getProducts() throws JsonProcessingException {
         List<Product> productList = productService.listAllProducts();
 
-        return new ResponseEntity<>(new ObjectMapper().writeValueAsString(productList), HttpStatus.FOUND);
+        return new ResponseEntity<>(new ObjectMapper().writeValueAsString(productList), HttpStatus.OK);
     }
 
     @PostMapping("/product")
