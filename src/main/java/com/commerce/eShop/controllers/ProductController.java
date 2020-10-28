@@ -5,6 +5,7 @@ import com.commerce.eShop.model.Product;
 import com.commerce.eShop.services.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +31,18 @@ public class ProductController {
 
     @PostMapping("/product")
     public ResponseEntity<?> createProduct(@RequestBody String body) throws JsonProcessingException {
-        Product product = new ObjectMapper().readValue(body, Product.class);
+        Product product;
+        try {
+            product = new ObjectMapper().readValue(body, Product.class);
 
-        Product returnProduct = productService.createProduct(product);
+            Product returnProduct = productService.createProduct(product);
 
-        return new ResponseEntity<>(new ObjectMapper().writeValueAsString(returnProduct), HttpStatus.CREATED);
+            return new ResponseEntity<>(new ObjectMapper().writeValueAsString(returnProduct), HttpStatus.CREATED);
+        } catch (UnrecognizedPropertyException e) {
+            String errorMsg = "unexpected field: " + e.getPropertyName();
+            e.printStackTrace();
+            return new ResponseEntity<>(new ObjectMapper().writeValueAsString(errorMsg), HttpStatus.FORBIDDEN);
+        }
+
     }
 }
