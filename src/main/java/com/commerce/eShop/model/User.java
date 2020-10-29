@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,6 +28,14 @@ public class User {
 
     @Column(name = "birth_date")
     private java.sql.Timestamp birth_date;
+
+    public User(String first_name, String last_name, Timestamp birth_date, String email, String password) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.birth_date = birth_date;
+        this.email = email;
+        this.password = password;
+    }
 
     @Column(name = "email")
     private String email;
